@@ -1,8 +1,11 @@
 const express = require("express");
+const bcrypt = require("bcrypt-nodejs");
+const cors = require("cors");
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 const database = {
   users: [
@@ -42,6 +45,12 @@ app.post("/signin", (req, res) => {
 
 app.post("/register", (req, res) => {
   const { email, name, password } = req.body;
+
+  bcrypt.hash(password, null, null, function(err, hash) {
+    // Store hash in your password DB.
+    console.log(hash);
+  });
+
   database.users.push({
     id: "125",
     name: name,
@@ -83,8 +92,20 @@ app.put("/image", (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("Example app listening on port 3000!");
+// bcrypt.hash("bacon", null, null, function(err, hash) {
+//   // Store hash in your password DB.
+// });
+
+// // Load hash from your password DB.
+// bcrypt.compare("bacon", hash, function(err, res) {
+//   // res == true
+// });
+// bcrypt.compare("veggies", hash, function(err, res) {
+//   // res = false
+// });
+
+app.listen(5000, () => {
+  console.log("Example app listening on port 5000!");
 });
 
-//Run app, then load http://localhost:3000 in a browser to see the output.
+//Run app, then load http://localhost:5000 in a browser to see the output.
